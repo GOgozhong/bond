@@ -1,0 +1,602 @@
+---
+title: "Untitled"
+date: "29/01/2020"
+output: html_document
+---
+
+find the yield curve
+```{r setup, include=FALSE}
+library(readxl)
+bonds_final <- read_excel("Desktop/bonds_final.xlsx")
+attach(bonds_final)
+#find dirty price#
+date02=as.Date(c("2020-01-02","2019-09-01"))
+date03=as.Date(c("2020-01-03","2019-09-01"))
+date06=as.Date(c("2020-01-06","2019-09-01"))
+date07=as.Date(c("2020-01-07","2019-09-01"))
+date08=as.Date(c("2020-01-08","2019-09-01"))
+date09=as.Date(c("2020-01-09","2019-09-01"))
+date10=as.Date(c("2020-01-10","2019-09-01"))
+date13=as.Date(c("2020-01-13","2019-09-01"))
+date14=as.Date(c("2020-01-14","2019-09-01"))
+date15=as.Date(c("2020-01-15","2019-09-01"))
+
+date2=as.Date(c("2020-01-02","2019-12-01"))
+date3=as.Date(c("2020-01-03","2019-12-01"))
+date6=as.Date(c("2020-01-06","2019-12-01"))
+date7=as.Date(c("2020-01-07","2019-12-01"))
+date8=as.Date(c("2020-01-08","2019-12-01"))
+date9=as.Date(c("2020-01-09","2019-12-01"))
+date10a=as.Date(c("2020-01-10","2019-12-01"))
+date13a=as.Date(c("2020-01-13","2019-12-01"))
+date14a=as.Date(c("2020-01-14","2019-12-01"))
+date15a=as.Date(c("2020-01-15","2019-12-01"))
+
+diff02=c(as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]),as.numeric(date2[1]-date2[2]),as.numeric(date02[1]-date02[2]),as.numeric(date2[1]-date2[2]),as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]),as.numeric(date02[1]-date02[2]))
+diff03=c(as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]),as.numeric(date3[1]-date3[2]),as.numeric(date03[1]-date03[2]),as.numeric(date3[1]-date3[2]),as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]),as.numeric(date03[1]-date03[2]))
+diff06=c(as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]),as.numeric(date6[1]-date6[2]),as.numeric(date06[1]-date06[2]),as.numeric(date6[1]-date6[2]),as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]),as.numeric(date06[1]-date06[2]))
+diff07=c(as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]),as.numeric(date7[1]-date7[2]),as.numeric(date07[1]-date07[2]),as.numeric(date7[1]-date7[2]),as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]),as.numeric(date07[1]-date07[2]))
+diff08=c(as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]),as.numeric(date8[1]-date8[2]),as.numeric(date08[1]-date08[2]),as.numeric(date8[1]-date8[2]),as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]),as.numeric(date08[1]-date08[2]))
+diff09=c(as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]),as.numeric(date9[1]-date9[2]),as.numeric(date09[1]-date09[2]),as.numeric(date9[1]-date9[2]),as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]),as.numeric(date09[1]-date09[2]))
+diff10=c(as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10a[1]-date10a[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10a[1]-date10a[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]),as.numeric(date10[1]-date10[2]))
+diff13=c(as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13a[1]-date13a[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13a[1]-date13a[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]),as.numeric(date13[1]-date13[2]))
+diff14=c(as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14a[1]-date14a[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14a[1]-date14a[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]),as.numeric(date14[1]-date14[2]))
+diff15=c(as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15a[1]-date15a[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15a[1]-date15a[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]),as.numeric(date15[1]-date15[2]))
+
+dir02=Jan_02+(diff02/365)*(`Coupon_in_%`)
+dir03=Jan_03+(diff03/365)*(`Coupon_in_%`)
+dir06=Jan_06+(diff06/365)*(`Coupon_in_%`)
+dir07=Jan_07+(diff07/365)*(`Coupon_in_%`)
+dir08=Jan_08+(diff08/365)*(`Coupon_in_%`)
+dir09=Jan_09+(diff09/365)*(`Coupon_in_%`)
+dir10=Jan_10+(diff10/365)*(`Coupon_in_%`)
+dir13=Jan_13+(diff13/365)*(`Coupon_in_%`)
+dir14=Jan_14+(diff14/365)*(`Coupon_in_%`)
+dir15=Jan_15+(diff15/365)*(`Coupon_in_%`)
+bonds_dir=cbind(bonds_final,dir02,dir03,dir06,dir07,dir08,dir09,dir10,dir13,dir14,dir15)
+dirpricelist=data.frame(dir02,dir03,dir06,dir07,dir08,dir09,dir10,dir13,dir14,dir15)
+
+library(jrvFinance)
+#find yields to maturity
+x=rep(1)
+#for each day yields to maturity of bonds
+Ytm02=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm03=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm06=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm07=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm08=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm09=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm10=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm13=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm14=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+Ytm15=data.frame(x,x,x,x,x,x,x,x,x,x,x)
+
+#calculate yield to maturity for each day
+coupon=`Coupon_in_%`/100
+mature=as.Date(Maturity_date)
+
+for (i in c(1:11))
+{Ytm02[i]=bond.yield("2020-01-02",mature[i],coupon[i],freq=2,price=Jan_02[i])}
+Ytm02=as.numeric(Ytm02)
+
+for (i in c(1:11))
+{Ytm03[i]=bond.yield("2020-01-03",mature[i],coupon[i],freq=2,price=Jan_03[i])}
+Ytm03=as.numeric(Ytm03)
+
+for (i in c(1:11))
+{Ytm06[i]=bond.yield("2020-01-06",mature[i],coupon[i],freq=2,price=Jan_06[i])}
+Ytm06=as.numeric(Ytm06)
+
+for (i in c(1:11))
+{Ytm07[i]=bond.yield("2020-01-07",mature[i],coupon[i],freq=2,price=Jan_07[i])}
+Ytm07=as.numeric(Ytm07)
+
+for (i in c(1:11))
+{Ytm08[i]=bond.yield("2020-01-08",mature[i],coupon[i],freq=2,price=Jan_08[i])}
+Ytm08=as.numeric(Ytm08)
+
+for (i in c(1:11))
+{Ytm09[i]=bond.yield("2020-01-09",mature[i],coupon[i],freq=2,price=Jan_09[i])}
+Ytm09=as.numeric(Ytm09)
+
+for (i in c(1:11))
+{Ytm10[i]=bond.yield("2020-01-10",mature[i],coupon[i],freq=2,price=Jan_10[i])}
+Ytm10=as.numeric(Ytm10)
+
+for (i in c(1:11))
+{Ytm13[i]=bond.yield("2020-01-13",mature[i],coupon[i],freq=2,price=Jan_13[i])}
+Ytm13=as.numeric(Ytm13)
+
+for (i in c(1:11))
+{Ytm14[i]=bond.yield("2020-01-14",mature[i],coupon[i],freq=2,price=Jan_14[i])}
+Ytm14=as.numeric(Ytm14)
+
+for (i in c(1:11))
+{Ytm15[i]=bond.yield("2020-01-15",mature[i],coupon[i],freq=2,price=Jan_15[i])}
+Ytm15=as.numeric(Ytm15)
+
+#time to maturity for each day
+dates <- c("2020-01-02", "2020-01-03", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-13", "2020-01-14", "2020-01-15")
+ttmJan02=yearFraction(dates[1],mature)
+ttmJan03=yearFraction(dates[2],mature)
+ttmJan06=yearFraction(dates[3],mature)
+ttmJan07=yearFraction(dates[4],mature)
+ttmJan08=yearFraction(dates[5],mature)
+ttmJan09=yearFraction(dates[6],mature)
+ttmJan10=yearFraction(dates[7],mature)
+ttmJan13=yearFraction(dates[8],mature)
+ttmJan14=yearFraction(dates[9],mature)
+ttmJan15=yearFraction(dates[10],mature)
+
+#plot the yield to maturity
+plot(ttmJan02, Ytm02, type = "b", frame = FALSE, pch = 19, col="red", xlab = "time to maturity in years", ylab="yield")
+lines(ttmJan03, Ytm03, pch = 18, col = "blue", type = "b", lty = 1)
+lines(ttmJan06, Ytm06, pch = 18, col = "yellow", type = "b", lty = 1)
+lines(ttmJan07, Ytm07, pch = 18, col = "green", type = "b", lty = 1)
+lines(ttmJan08, Ytm08, pch = 18, col = "brown", type = "b", lty = 1)
+lines(ttmJan09, Ytm09, pch = 18, col = "purple", type = "b", lty = 1)
+lines(ttmJan10, Ytm10, pch = 18, col = "black", type = "b", lty = 1)
+lines(ttmJan13, Ytm13, pch = 18, col = "grey", type = "b", lty = 1)
+lines(ttmJan14, Ytm14, pch = 18, col = "pink", type = "b", lty = 1)
+lines(ttmJan15, Ytm15, pch = 18, col = "orange", type = "b", lty = 1)
+
+legend("topright", legend=c("2020-01-02", "2020-01-03","2020-01-06","2020-01-07","2020-01-08","2020-01-09","2020-01-10","2020-01-13","2020-01-14","2020-01-15"),
+       col=c("red", "blue","yellow","green","brown","purple","black","grey","pink","orange"), lty = 1, cex=0.5)
+
+
+```
+
+
+
+
+
+
+find the spot rate 
+```{r setup, include=FALSE}
+#find spot rate
+payoff_times = c(1,2, 3, 4, 5, 5, 7, 7, 9, 10, 11)
+dates <- c("2020-01-02", "2020-01-03", "2020-01-06", "2020-01-07", "2020-01-08", "2020-01-09", "2020-01-10", "2020-01-13", "2020-01-14", "2020-01-15")
+time_since_last_payment=c(123,124,127,128,129,130,131,134,135,136)
+
+spotrate=data.frame(x,x,x,x,x,x,x,x,x,x)
+
+# calculate spot rate for bond1 in each day(mature in '2020-03-01')
+cashflow_bond1=c()
+for(i in c(1:10))
+  cashflow_bond1=append(cashflow_bond1, bond.TCF(dates[i],mature[1],coupon[1],freq = 2,redemption_value =100)$cf)
+spotratebond1=c()
+for (i in c(1:10)) 
+  spotratebond1 = append(spotratebond1,log(cashflow_bond1[i]/dirpricelist[[i]][1])/yearFraction(dates[i],mature[1]))
+
+
+## calculate spot rate for bond2 in each day(mature in '2020-09-01')
+cashflow_bond2=bond.TCF(dates[i],mature[2],coupon[2],freq = 2,redemption_value =100)$cf
+
+spotratebond2=c()
+for (i in c(1:10)) 
+  spotratebond2 = append(spotratebond2,log(cashflow_bond2[2]/(dirpricelist[[i]][2]- cashflow_bond2[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))))/yearFraction(dates[i],mature[2]))
+
+## calculate spot rate for bond3 in each day(mature in '2021-03-01')
+cashflow_bond3=bond.TCF(dates[i],mature[3],coupon[3],freq = 2,redemption_value =100)$cf
+spotratebond3=c()
+for (i in c(1:10)) 
+  spotratebond3 = append(spotratebond3,log(cashflow_bond3[3]/(dirpricelist[[i]][3]- cashflow_bond3[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond3[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))))/yearFraction(dates[i],mature[3]))
+
+## calculate spot rate for bond4 in each day(mature in '2021-09-01')
+cashflow_bond4=bond.TCF(dates[i],mature[4],coupon[4],freq = 2,redemption_value =100)$cf
+spotratebond4=c()
+for (i in c(1:10)) 
+  spotratebond4 = append(spotratebond4,log(cashflow_bond4[4]/(dirpricelist[[i]][4]- cashflow_bond4[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond4[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond4[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))))/yearFraction(dates[i],mature[4]))
+
+## calculate spot rate for bond5 in each day(mature in '2022-03-01')
+cashflow_bond5=bond.TCF(dates[i],mature[5],coupon[5],freq = 2,redemption_value =100)$cf
+spotratebond5=c()
+for (i in c(1:10)) 
+  spotratebond5 = append(spotratebond5,log(cashflow_bond5[5]/(dirpricelist[[i]][5]- cashflow_bond5[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond5[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond5[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))-cashflow_bond5[4]*exp(-1*spotratebond4[i]*yearFraction(dates[i],mature[4]))))/yearFraction(dates[i],mature[5]))
+
+## We need to do bond7 first(mature in '2023-03-01')
+cashflow_bond7=bond.TCF(dates[i],mature[7],coupon[7],freq = 2,redemption_value =100)$cf
+spotratebond7=c()
+for (i in c(1:10)) 
+  spotratebond7 = append(spotratebond7,log(cashflow_bond7[7]/(dirpricelist[[i]][7]- cashflow_bond7[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond7[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond7[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))-cashflow_bond7[4]*exp(-1*spotratebond4[i]*yearFraction(dates[i],mature[4]))-cashflow_bond7[5]*exp(-1*spotratebond5[i]*yearFraction(dates[i],mature[5]))-cashflow_bond7[6]*exp(-1*spotratebond5[i]*yearFraction(dates[i],'2022-09-01'))))/yearFraction(dates[i],mature[7]))
+
+## bond6 by interpolation(mature in '2022-09-01')
+spotratebond6=c()
+for (i in c(1:10)) 
+  spotratebond6 = append(spotratebond6,spotratebond5[i]+(spotratebond7[i]-spotratebond5[i])*yearFraction(mature[5],'2022-09-01')/yearFraction(mature[5],mature[7]))
+
+## calculate spot rate for bond9 in each day(mature in '2024-03-01')
+cashflow_bond9=bond.TCF(dates[i],mature[9],coupon[9],freq = 2,redemption_value =100)$cf
+spotratebond9=c()
+for (i in c(1:10)) 
+  spotratebond9 = append(spotratebond9,log(cashflow_bond9[9]/(dirpricelist[[i]][9]- cashflow_bond9[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond9[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond9[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))-cashflow_bond9[4]*exp(-1*spotratebond4[i]*yearFraction(dates[i],mature[4]))-cashflow_bond9[5]*exp(-1*spotratebond5[i]*yearFraction(dates[i],mature[5]))-cashflow_bond9[6]*exp(-1*spotratebond6[i]*yearFraction(dates[i],'2022-09-01'))-cashflow_bond9[7]*exp(-1*spotratebond7[i]*yearFraction(dates[i],mature[7]))-cashflow_bond9[8]*exp(-1*spotratebond7[i]*yearFraction(dates[i],'2023-09-01'))))/yearFraction(dates[i],mature[9]))
+
+## calculate spot rate for bond8 in each day(mature in '2023-09-01') by linear interpolation.
+spotratebond8=c()
+for (i in c(1:10)) 
+  spotratebond8 = append(spotratebond8,spotratebond7[i]+(spotratebond9[i]-spotratebond7[i])*yearFraction(mature[7],'2023-09-01')/yearFraction(mature[7],mature[9]))
+
+## calculate spot rate for bond10 in each day(mature in '2024-09-01')
+cashflow_bond10=bond.TCF(dates[i],mature[10],coupon[10],freq = 2,redemption_value =100)$cf
+spotratebond10=c()
+for (i in c(1:10)) 
+  spotratebond10 = append(spotratebond10,log(cashflow_bond10[10]/(dirpricelist[[i]][10]- cashflow_bond10[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond10[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond10[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))-cashflow_bond10[4]*exp(-1*spotratebond4[i]*yearFraction(dates[i],mature[4]))-cashflow_bond10[5]*exp(-1*spotratebond5[i]*yearFraction(dates[i],mature[5]))-cashflow_bond10[6]*exp(-1*spotratebond6[i]*yearFraction(dates[i],'2022-09-01'))-cashflow_bond10[7]*exp(-1*spotratebond7[i]*yearFraction(dates[i],mature[7]))-cashflow_bond10[8]*exp(-1*spotratebond8[i]*yearFraction(dates[i],'2023-09-01'))-cashflow_bond10[9]*exp(-1*spotratebond9[i]*yearFraction(dates[i],mature[9]))))/yearFraction(dates[i],mature[10]))
+
+## calculate spot rate for bond11 in each day(mature in '2025-03-01')
+cashflow_bond11=bond.TCF(dates[i],mature[11],coupon[11],freq = 2,redemption_value =100)$cf
+spotratebond11=c()
+for (i in c(1:10)) 
+  spotratebond11 = append(spotratebond11,log(cashflow_bond11[11]/(dirpricelist[[i]][11]- cashflow_bond11[1] * exp(-1*spotratebond1[i] * yearFraction(dates[i],mature[1]))-cashflow_bond11[2]*exp(-1*spotratebond2[i]*yearFraction(dates[i],mature[2]))-cashflow_bond11[3]*exp(-1*spotratebond3[i]*yearFraction(dates[i],mature[3]))-cashflow_bond11[4]*exp(-1*spotratebond4[i]*yearFraction(dates[i],mature[4]))-cashflow_bond11[5]*exp(-1*spotratebond5[i]*yearFraction(dates[i],mature[5]))-cashflow_bond11[6]*exp(-1*spotratebond6[i]*yearFraction(dates[i],'2022-09-01'))-cashflow_bond11[7]*exp(-1*spotratebond7[i]*yearFraction(dates[i],mature[7]))-cashflow_bond11[8]*exp(-1*spotratebond8[i]*yearFraction(dates[i],'2023-09-01'))-cashflow_bond11[9]*exp(-1*spotratebond9[i]*yearFraction(dates[i],mature[9]))-cashflow_bond11[10]*exp(-1*spotratebond10[i]*yearFraction(dates[i],mature[10]))))/yearFraction(dates[i],mature[11]))
+
+###spot rate for each day
+spotratebond=list(spotratebond1,spotratebond2,spotratebond3,spotratebond4,spotratebond5,spotratebond6,spotratebond7,spotratebond8,spotratebond9,spotratebond10,spotratebond11)
+
+###spot rate for Jan02
+spotratejan02=c()
+for(i in c(1:11))
+  spotratejan02=append(spotratejan02,spotratebond[[i]][1])
+
+###spot rate for Jan03
+spotratejan03=c()
+for(i in c(1:11))
+  spotratejan03=append(spotratejan03,spotratebond[[i]][2])
+
+###spot rate for Jan06
+spotratejan06=c()
+for(i in c(1:11))
+  spotratejan06=append(spotratejan06,spotratebond[[i]][3])
+
+###spot rate for Jan07
+spotratejan07=c()
+for(i in c(1:11))
+  spotratejan07=append(spotratejan07,spotratebond[[i]][4])
+
+###spot rate for Jan08
+spotratejan08=c()
+for(i in c(1:11))
+  spotratejan08=append(spotratejan08,spotratebond[[i]][5])
+
+###spot rate for Jan09
+spotratejan09=c()
+for(i in c(1:11))
+  spotratejan09=append(spotratejan09,spotratebond[[i]][6])
+
+###spot rate for Jan10
+spotratejan10=c()
+for(i in c(1:11))
+  spotratejan10=append(spotratejan10,spotratebond[[i]][7])
+
+###spot rate for Jan13
+spotratejan13=c()
+for(i in c(1:11))
+  spotratejan13=append(spotratejan13,spotratebond[[i]][8])
+
+###spot rate for Jan14
+spotratejan14=c()
+for(i in c(1:11))
+  spotratejan14=append(spotratejan14,spotratebond[[i]][9])
+
+###spot rate for Jan15
+spotratejan15=c()
+for(i in c(1:11))
+  spotratejan15=append(spotratejan15,spotratebond[[i]][10])
+
+###plot the spot curve
+plot(ttmJan02, spotratejan02, type = "b", frame = FALSE, pch = 19, col="red", xlab = "years", ylab="spot rates")
+lines(ttmJan03,spotratejan03, pch = 18, col = "blue", type = "b", lty = 1)
+lines(ttmJan06, spotratejan06, pch = 18, col = "yellow", type = "b", lty = 1)
+lines(ttmJan07, spotratejan07, pch = 18, col = "green", type = "b", lty = 1)
+lines(ttmJan08, spotratejan08, pch = 18, col = "brown", type = "b", lty = 1)
+lines(ttmJan09, spotratejan09, pch = 18, col = "purple", type = "b", lty = 1)
+lines(ttmJan10, spotratejan10, pch = 18, col = "black", type = "b", lty = 1)
+lines(ttmJan13, spotratejan13, pch = 18, col = "grey", type = "b", lty = 1)
+lines(ttmJan14, spotratejan14, pch = 18, col = "pink", type = "b", lty = 1)
+lines(ttmJan15, spotratejan15, pch = 18, col = "orange", type = "b", lty = 1)
+
+legend("topright", legend=c("2020-01-02", "2020-01-03","2020-01-06","2020-01-07","2020-01-08","2020-01-09","2020-01-10","2020-01-13","2020-01-14","2020-01-15"),
+       col=c("red", "blue","yellow","green","brown","purple","black","grey","pink","orange"), lty = 1, cex=0.5)
+
+
+```
+
+
+
+
+find the forward rate 
+```{r setup, include=FALSE}
+### find the forward rate
+## use linear intepolation to calculate the spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff=c(yearFraction('2020-09-01','2021-03-01'),yearFraction('2021-09-01','2022-03-01'),yearFraction('2022-09-01','2023-03-01'),yearFraction('2023-09-01','2024-03-01'),yearFraction('2024-09-01','2025-03-01'))
+
+
+
+
+### for Jan02, spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff02=c(yearFraction('2020-09-01','2021-01-02'),yearFraction('2021-09-01','2022-01-02'),yearFraction('2022-09-01','2023-01-02'),yearFraction('2023-09-01','2024-01-02'),yearFraction('2024-09-01','2025-01-02'))
+spotrateyearlyJan02=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan02= append(spotrateyearlyJan02,spotratejan02[i]+(spotratejan02[i+1]-spotratejan02[i])/Timediff[i/2]*Timediff02[i/2])
+
+
+
+### for Jan03,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff03=c(yearFraction('2020-09-01','2021-01-03'),yearFraction('2021-09-01','2022-01-03'),yearFraction('2022-09-01','2023-01-03'),yearFraction('2023-09-01','2024-01-03'),yearFraction('2024-09-01','2025-01-03'))
+spotrateyearlyJan03=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan03= append(spotrateyearlyJan03,spotratejan03[i]+(spotratejan03[i+1]-spotratejan03[i])/Timediff[i/2]*Timediff03[i/2])  
+
+
+
+### for Jan06,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff06=c(yearFraction('2020-09-01','2021-01-06'),yearFraction('2021-09-01','2022-01-06'),yearFraction('2022-09-01','2023-01-06'),yearFraction('2023-09-01','2024-01-06'),yearFraction('2024-09-01','2025-01-06'))
+spotrateyearlyJan06=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan06= append(spotrateyearlyJan06,spotratejan06[i]+(spotratejan06[i+1]-spotratejan06[i])/Timediff[i/2]*Timediff06[i/2]) 
+
+
+
+### for Jan07,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff07=c(yearFraction('2020-09-01','2021-01-07'),yearFraction('2021-09-01','2022-01-07'),yearFraction('2022-09-01','2023-01-07'),yearFraction('2023-09-01','2024-01-07'),yearFraction('2024-09-01','2025-01-07'))
+spotrateyearlyJan07=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan07= append(spotrateyearlyJan07,spotratejan07[i]+(spotratejan07[i+1]-spotratejan07[i])/Timediff[i/2]*Timediff07[i/2]) 
+
+
+
+### for Jan08,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff08=c(yearFraction('2020-09-01','2021-01-08'),yearFraction('2021-09-01','2022-01-08'),yearFraction('2022-09-01','2023-01-08'),yearFraction('2023-09-01','2024-01-08'),yearFraction('2024-09-01','2025-01-08'))
+spotrateyearlyJan08=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan08= append(spotrateyearlyJan08,spotratejan08[i]+(spotratejan08[i+1]-spotratejan08[i])/Timediff[i/2]*Timediff08[i/2]) 
+
+
+
+### for Jan09,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff09=c(yearFraction('2020-09-01','2021-01-09'),yearFraction('2021-09-01','2022-01-09'),yearFraction('2022-09-01','2023-01-09'),yearFraction('2023-09-01','2024-01-09'),yearFraction('2024-09-01','2025-01-09'))
+spotrateyearlyJan09=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan09= append(spotrateyearlyJan09,spotratejan09[i]+(spotratejan09[i+1]-spotratejan09[i])/Timediff[i/2]*Timediff09[i/2]) 
+
+
+
+### for Jan10,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff10=c(yearFraction('2020-09-01','2021-01-10'),yearFraction('2021-09-01','2022-01-10'),yearFraction('2022-09-01','2023-01-10'),yearFraction('2023-09-01','2024-01-10'),yearFraction('2024-09-01','2025-01-10'))
+spotrateyearlyJan10=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan10= append(spotrateyearlyJan10,spotratejan10[i]+(spotratejan10[i+1]-spotratejan10[i])/Timediff[i/2]*Timediff10[i/2]) 
+
+
+
+### for Jan13,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff13=c(yearFraction('2020-09-01','2021-01-13'),yearFraction('2021-09-01','2022-01-13'),yearFraction('2022-09-01','2023-01-13'),yearFraction('2023-09-01','2024-01-13'),yearFraction('2024-09-01','2025-01-13'))
+spotrateyearlyJan13=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan13= append(spotrateyearlyJan13,spotratejan13[i]+(spotratejan13[i+1]-spotratejan13[i])/Timediff[i/2]*Timediff13[i/2]) 
+
+
+
+### for Jan14,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff14=c(yearFraction('2020-09-01','2021-01-14'),yearFraction('2021-09-01','2022-01-14'),yearFraction('2022-09-01','2023-01-14'),yearFraction('2023-09-01','2024-01-14'),yearFraction('2024-09-01','2025-01-14'))
+spotrateyearlyJan14=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan14= append(spotrateyearlyJan14,spotratejan14[i]+(spotratejan14[i+1]-spotratejan14[i])/Timediff[i/2]*Timediff14[i/2]) 
+
+
+
+### for Jan15,spot rate in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff15=c(yearFraction('2020-09-01','2021-01-15'),yearFraction('2021-09-01','2022-01-15'),yearFraction('2022-09-01','2023-01-15'),yearFraction('2023-09-01','2024-01-15'),yearFraction('2024-09-01','2025-01-15'))
+spotrateyearlyJan15=c()
+for (i in c(2,4,6,8,10))
+  spotrateyearlyJan15= append(spotrateyearlyJan15,spotratejan15[i]+(spotratejan15[i+1]-spotratejan15[i])/Timediff[i/2]*Timediff15[i/2]) 
+
+
+###find the forward rate based on the spot rate in '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+### calculate forward rate for Jan02
+forwardrateJan02=c()
+for(i in c(2:5))
+  forwardrateJan02=append(forwardrateJan02,((((1+spotrateyearlyJan02[i])^(i)/(1+spotrateyearlyJan02[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan03
+forwardrateJan03=c()
+for(i in c(2:5))
+  forwardrateJan03=append(forwardrateJan03,((((1+spotrateyearlyJan03[i])^(i)/(1+spotrateyearlyJan03[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan06
+forwardrateJan06=c()
+for(i in c(2:5))
+  forwardrateJan06=append(forwardrateJan06,((((1+spotrateyearlyJan06[i])^(i)/(1+spotrateyearlyJan06[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan07
+forwardrateJan07=c()
+for(i in c(2:5))
+  forwardrateJan07=append(forwardrateJan07,((((1+spotrateyearlyJan07[i])^(i)/(1+spotrateyearlyJan07[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan08
+forwardrateJan08=c()
+for(i in c(2:5))
+  forwardrateJan08=append(forwardrateJan08,((((1+spotrateyearlyJan08[i])^(i)/(1+spotrateyearlyJan08[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan09
+forwardrateJan09=c()
+for(i in c(2:5))
+  forwardrateJan09=append(forwardrateJan09,((((1+spotrateyearlyJan09[i])^(i)/(1+spotrateyearlyJan09[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan10
+forwardrateJan10=c()
+for(i in c(2:5))
+  forwardrateJan10=append(forwardrateJan10,((((1+spotrateyearlyJan10[i])^(i)/(1+spotrateyearlyJan10[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan13
+forwardrateJan13=c()
+for(i in c(2:5))
+  forwardrateJan13=append(forwardrateJan13,((((1+spotrateyearlyJan13[i])^(i)/(1+spotrateyearlyJan13[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan14
+forwardrateJan14=c()
+for(i in c(2:5))
+  forwardrateJan14=append(forwardrateJan14,((((1+spotrateyearlyJan14[i])^(i)/(1+spotrateyearlyJan14[1]))^(1/(i-1)))-1))
+
+### calculate forward rate for Jan15
+forwardrateJan15=c()
+for(i in c(2:5))
+  forwardrateJan15=append(forwardrateJan15,((((1+spotrateyearlyJan15[i])^(i)/(1+spotrateyearlyJan15[1]))^(1/(i-1)))-1))
+
+### plot the forward curves
+time=c(1,2,3,4)
+plot(time, forwardrateJan02, type = "b", frame = FALSE, pch = 19, col="red", xlab = "years", ylab="forward rates",ylim = c(0.015,0.017))
+lines(time,forwardrateJan03, pch = 18, col = "blue", type = "b", lty = 1)
+lines(time, forwardrateJan06, pch = 18, col = "yellow", type = "b", lty = 1)
+lines(time, forwardrateJan07, pch = 18, col = "green", type = "b", lty = 1)
+lines(time, forwardrateJan08, pch = 18, col = "brown", type = "b", lty = 1)
+lines(time, forwardrateJan09, pch = 18, col = "purple", type = "b", lty = 1)
+lines(time, forwardrateJan10, pch = 18, col = "black", type = "b", lty = 1)
+lines(time, forwardrateJan13, pch = 18, col = "grey", type = "b", lty = 1)
+lines(time, forwardrateJan14, pch = 18, col = "pink", type = "b", lty = 1)
+lines(time, forwardrateJan15, pch = 18, col = "orange", type = "b", lty = 1)
+
+legend("topleft", legend=c("2020-01-02", "2020-01-03","2020-01-06","2020-01-07","2020-01-08","2020-01-09","2020-01-10","2020-01-13","2020-01-14","2020-01-15"),
+       col=c("red", "blue","yellow","green","brown","purple","black","grey","pink","orange"), lty = 1, cex=0.4)
+```
+
+
+
+
+find Covarince Matrix
+```{r setup, include=FALSE}
+
+
+### for Jan02, yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+Timediff02=c(yearFraction('2020-09-01','2021-01-02'),yearFraction('2021-09-01','2022-01-02'),yearFraction('2022-09-01','2023-01-02'),yearFraction('2023-09-01','2024-01-02'),yearFraction('2024-09-01','2025-01-02'))
+yieldyearlyJan02=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan02= append(yieldyearlyJan02,Ytm02[i]+(Ytm02[i+1]-Ytm02[i])/Timediff[i/2]*Timediff02[i/2])
+
+### for Jan03,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff03=c(yearFraction('2020-09-01','2021-01-03'),yearFraction('2021-09-01','2022-01-03'),yearFraction('2022-09-01','2023-01-03'),yearFraction('2023-09-01','2024-01-03'),yearFraction('2024-09-01','2025-01-03'))
+yieldyearlyJan03=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan03= append(yieldyearlyJan03,Ytm03[i]+(Ytm03[i+1]-Ytm03[i])/Timediff[i/2]*Timediff03[i/2])  
+
+
+
+### for Jan06,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff06=c(yearFraction('2020-09-01','2021-01-06'),yearFraction('2021-09-01','2022-01-06'),yearFraction('2022-09-01','2023-01-06'),yearFraction('2023-09-01','2024-01-06'),yearFraction('2024-09-01','2025-01-06'))
+yieldyearlyJan06=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan06= append(yieldyearlyJan06,Ytm06[i]+(Ytm06[i+1]-Ytm06[i])/Timediff[i/2]*Timediff06[i/2]) 
+
+
+
+### for Jan07,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff07=c(yearFraction('2020-09-01','2021-01-07'),yearFraction('2021-09-01','2022-01-07'),yearFraction('2022-09-01','2023-01-07'),yearFraction('2023-09-01','2024-01-07'),yearFraction('2024-09-01','2025-01-07'))
+yieldyearlyJan07=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan07= append(yieldyearlyJan07,Ytm07[i]+(Ytm07[i+1]-Ytm07[i])/Timediff[i/2]*Timediff07[i/2]) 
+
+
+
+### for Jan08,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff08=c(yearFraction('2020-09-01','2021-01-08'),yearFraction('2021-09-01','2022-01-08'),yearFraction('2022-09-01','2023-01-08'),yearFraction('2023-09-01','2024-01-08'),yearFraction('2024-09-01','2025-01-08'))
+yieldyearlyJan08=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan08= append(yieldyearlyJan08,Ytm08[i]+(Ytm08[i+1]-Ytm08[i])/Timediff[i/2]*Timediff08[i/2]) 
+
+
+
+### for Jan09,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff09=c(yearFraction('2020-09-01','2021-01-09'),yearFraction('2021-09-01','2022-01-09'),yearFraction('2022-09-01','2023-01-09'),yearFraction('2023-09-01','2024-01-09'),yearFraction('2024-09-01','2025-01-09'))
+yieldyearlyJan09=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan09= append(yieldyearlyJan09,Ytm09[i]+(Ytm09[i+1]-Ytm09[i])/Timediff[i/2]*Timediff09[i/2]) 
+
+
+
+### for Jan10,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff10=c(yearFraction('2020-09-01','2021-01-10'),yearFraction('2021-09-01','2022-01-10'),yearFraction('2022-09-01','2023-01-10'),yearFraction('2023-09-01','2024-01-10'),yearFraction('2024-09-01','2025-01-10'))
+yieldyearlyJan10=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan10= append(yieldyearlyJan10,Ytm10[i]+(Ytm10[i+1]-Ytm10[i])/Timediff[i/2]*Timediff10[i/2]) 
+
+
+
+### for Jan13,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff13=c(yearFraction('2020-09-01','2021-01-13'),yearFraction('2021-09-01','2022-01-13'),yearFraction('2022-09-01','2023-01-13'),yearFraction('2023-09-01','2024-01-13'),yearFraction('2024-09-01','2025-01-13'))
+yieldyearlyJan13=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan13= append(yieldyearlyJan13,Ytm13[i]+(Ytm13[i+1]-Ytm13[i])/Timediff[i/2]*Timediff13[i/2]) 
+
+
+
+### for Jan14,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff14=c(yearFraction('2020-09-01','2021-01-14'),yearFraction('2021-09-01','2022-01-14'),yearFraction('2022-09-01','2023-01-14'),yearFraction('2023-09-01','2024-01-14'),yearFraction('2024-09-01','2025-01-14'))
+yieldyearlyJan14=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan14= append(yieldyearlyJan14,Ytm14[i]+(Ytm14[i+1]-Ytm14[i])/Timediff[i/2]*Timediff14[i/2]) 
+
+
+
+### for Jan15,yieldcurve in the '2021-01-xx','2022-01-xx','2023-01-xx','2024-01-xx','2025-01-xx'.
+
+Timediff15=c(yearFraction('2020-09-01','2021-01-15'),yearFraction('2021-09-01','2022-01-15'),yearFraction('2022-09-01','2023-01-15'),yearFraction('2023-09-01','2024-01-15'),yearFraction('2024-09-01','2025-01-15'))
+yieldyearlyJan15=c()
+for (i in c(2,4,6,8,10))
+  yieldyearlyJan15= append(yieldyearlyJan15,Ytm15[i]+(Ytm15[i+1]-Ytm15[i])/Timediff[i/2]*Timediff15[i/2]) 
+
+yieldyear=c(yieldyearlyJan02,yieldyearlyJan03,yieldyearlyJan06,yieldyearlyJan07,yieldyearlyJan08,yieldyearlyJan09,yieldyearlyJan10,yieldyearlyJan13,yieldyearlyJan14,yieldyearlyJan15)
+
+
+yieldyear = matrix(yieldyear,  nrow = 10, ncol = 5, byrow = T)
+yieldyear=t(yieldyear)
+
+Xyield = c()
+for (i in c(1:5)){
+  for (j in c(1:9)){
+   Xyield = append(Xyield, log(yieldyear[i,j+1]/Yield[i,j]))
+  }
+}
+Xyield = matrix(Xyield, nrow = 5, ncol = 9, byrow = T)
+### Covariance Matrix of Yield log return and eigenvectors & eigenvalues
+cov_yield = cov(t(Xyield))
+cov_yield
+eigenyield=eigen(cov_yield)
+eigenyield
+
+
+
+
+##### covariance of forward rate
+forwardrate=c(forwardrateJan02,forwardrateJan03,forwardrateJan06,forwardrateJan07,forwardrateJan08,forwardrateJan09,forwardrateJan10,forwardrateJan13,forwardrateJan14,forwardrateJan15)
+forwardrate=matrix(forwardrate, nrow=10, ncol=4, byrow = T)
+
+Xforward = c()
+for (i in c(1:4)){
+  for (j in c(1:9)){
+    Xforward = append(Xforward, log(forwardrate[j+1,i]/forwardrate[j,i]))
+  }
+}
+Xforward = matrix(Xforward, nrow = 4, ncol = 9, byrow = T)
+### Covariance Matrix of Forward log return and eigenvectors & eigenvalues
+cov_forward = cov(t(Xforward))
+cov_forward
+eigenforward=eigen(cov_forward)
+eigenforward
